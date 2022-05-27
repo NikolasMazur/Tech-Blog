@@ -26,4 +26,12 @@ router.get('/', withAuth, async (req, res) => {
   }
 });
 
+router.get('/newArticle', withAuth, async (req, res) => {
+  if (req.session.logged_in) {
+    res.render('newArticle');
+  } else {
+  res.redirect('/login');
+  }
+});
+
 module.exports = router;
