@@ -77,4 +77,25 @@ router.get('/articles/:id', async (req, res) => {
   }
 });
 
+router.get('/updateComment/:id', withAuth, async (req, res) => {  
+  try {
+    const commentData = await Comment.findByPk(req.params.id, {
+      where: {
+        id: req.params.id,
+        user_id: req.session.user_id,
+      },
+    });
+
+    const comment = commentData.get({ plain: true });
+
+    res.render('updateComment', {
+      comment,
+      logged_in: req.session.logged_in,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
 module.exports = router;
