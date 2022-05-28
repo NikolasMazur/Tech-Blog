@@ -67,4 +67,28 @@ router.post('/', withAuth, async (req, res) => {
   }
 });
 
+router.put('/:id', withAuth, async (req, res) => {
+  try {
+    const commentData = await Comment.update(
+    {
+      content: req.body.commentContent,
+    },
+    {
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    if (!commentData) {
+      res.status(404).json({ message: 'No matching ID.' });
+      return;
+    }
+
+    res.status(200).json(commentData);
+  } catch (err) {
+    console.error(err);
+    res.status(400).json(err);
+  }
+});
+
 module.exports = router;
